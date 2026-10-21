@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Рынок ИКТ Кыргызстана</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><span class="logo">ИКТ</span><div><b>Рынок ИКТ</b><small>Кыргызстан</small></div></div>
+  <nav>
+    <button class="nav active" data-view="dashboard">Главная панель</button>
+    <button class="nav" data-view="companies">Каталог компаний</button>
+    <button class="nav" data-view="products">Услуги и продукты</button>
+    <button class="nav" data-view="analytics">Аналитика рынка</button>
+    <button class="nav" data-view="stats">Статистика и динамика</button>
+    <button class="nav" data-view="register">Регистрация компании</button>
+  </nav>
+  <button class="btn ghost" id="resetBtn">Сбросить демо-данные</button>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <button class="burger" id="burger" aria-label="Меню">☰</button>
+    <h1 id="viewTitle">Главная панель</h1>
+    <div class="demo-badge">Демонстрационные данные</div>
+  </header>
+
+  <main>
+    <!-- Главная панель -->
+    <section class="view active" id="view-dashboard">
+      <div class="notice">Показатели ниже — <b>демонстрационные</b> и не подтверждены официальной статистикой. Замените их данными Нацстаткома КР, Минцифры или Парка высоких технологий.</div>
+      <div class="cards" id="kpis"></div>
+      <div class="grid2">
+        <div class="panel"><h3>Компании по направлениям</h3><div class="chart-box"><canvas id="chDashCat"></canvas></div></div>
+        <div class="panel"><h3>Доля ИКТ в ВВП, % (демо)</h3><div class="chart-box"><canvas id="chDashShare"></canvas></div></div>
+      </div>
+      <div class="panel"><h3>Крупнейшие компании по числу сотрудников</h3><div class="table-wrap"><table id="topTable"></table></div></div>
+    </section>
+
+    <!-- Компании -->
+    <section class="view" id="view-companies">
+      <div class="toolbar">
+        <input type="search" id="cSearch" placeholder="Поиск по названию, услугам, городу…">
+        <select id="cCat"></select>
+        <select id="cSort">
+          <option value="name">По названию</option>
+          <option value="employees">По числу сотрудников</option>
+          <option value="price">По цене</option>
+          <option value="year">По году основания</option>
+        </select>
+        <button class="btn" id="cAdd">+ Добавить</button>
+        <button class="btn outline" id="cCsv">Экспорт CSV</button>
+      </div>
+      <div class="panel"><div class="table-wrap"><table id="cTable"></table></div><p class="count" id="cCount"></p></div>
+    </section>
+
+    <!-- Услуги и продукты -->
+    <section class="view" id="view-products">
+      <div class="toolbar">
+        <input type="search" id="pSearch" placeholder="Поиск услуг и продуктов…">
+        <select id="pType"></select>
+        <button class="btn" id="pAdd">+ Добавить</button>
+        <button class="btn outline" id="pCsv">Экспорт CSV</button>
+      </div>
+      <div class="panel"><div class="table-wrap"><table id="pTable"></table></div><p class="count" id="pCount"></p></div>
+    </section>
+
+    <!-- Аналитика -->
+    <section class="view" id="view-analytics">
+      <div class="grid2">
+        <div class="panel"><h3>Средняя цена проекта по направлениям, $</h3><div class="chart-box"><canvas id="chPrice"></canvas></div></div>
+        <div class="panel"><h3>Компании по городам</h3><div class="chart-box"><canvas id="chCity"></canvas></div></div>
+        <div class="panel"><h3>Сотрудники по направлениям</h3><div class="chart-box"><canvas id="chEmp"></canvas></div></div>
+        <div class="panel"><h3>Продукты и услуги по типам</h3><div class="chart-box"><canvas id="chType"></canvas></div></div>
+      </div>
+    </section>
+
+    <!-- Статистика -->
+    <section class="view" id="view-stats">
+      <div class="notice">Динамика 2018–2025 гг. — <b>демонстрационный пример</b>, не официальная статистика.</div>
+      <div class="grid2">
+        <div class="panel"><h3>Пользователи интернета и доля ИКТ в ВВП, %</h3><div class="chart-box"><canvas id="chStat1"></canvas></div></div>
+        <div class="panel"><h3>Экспорт ИТ-услуг, млн $</h3><div class="chart-box"><canvas id="chStat2"></canvas></div></div>
+      </div>
+      <div class="toolbar"><button class="btn outline" id="sCsv">Экспорт CSV</button></div>
+      <div class="panel"><div class="table-wrap"><table id="sTable"></table></div></div>
+    </section>
+
+    <!-- Регистрация -->
+    <section class="view" id="view-register">
+      <div class="panel narrow">
+        <h3>Регистрация IT-компании</h3>
+        <p class="muted">Заполните форму — компания появится в каталоге. Данные сохраняются только в вашем браузере.</p>
+        <form id="regForm" class="form"></form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="modal">
+  <form method="dialog" class="form" id="modalForm">
+    <h3 id="modalTitle"></h3>
+    <div id="modalFields" class="fields"></div>
+    <div class="actions">
+      <button type="button" class="btn outline" id="modalCancel">Отмена</button>
+      <button type="submit" class="btn">Сохранить</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+<script src="script.js"></script>
+</body>
+</html>
